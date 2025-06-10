@@ -23,6 +23,8 @@ func NewNotificationClient() (*NotificationClient, error) {
 		addr = "notification-sender:50052"
 	}
 
+	fmt.Printf("Подключение к NotificationService по адресу: %s\n", addr)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
