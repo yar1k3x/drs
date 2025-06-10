@@ -18,7 +18,7 @@ type NotificationClient struct {
 }
 
 func NewNotificationClient() (*NotificationClient, error) {
-	addr := os.Getenv("NOTIFICATION_SERVICE_ADDR") + os.Getenv("NOTIFICATION_SERVICE_PORT")
+	addr := os.Getenv("NOTIFICATION_SERVICE_ADDR") + ":" + os.Getenv("NOTIFICATION_SERVICE_PORT")
 	if addr == "" {
 		addr = "notification-sender:50052"
 	}
