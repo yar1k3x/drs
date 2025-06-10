@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package drs;
+import "validate/validate.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "drs/proto;proto";
+
+service DeliveryRequestService {
+  rpc CreateRequest(CreateRequestInput) returns (CreateRequestResponse);
+  rpc GetRequest(GetRequestInput) returns (GetRequestResponse);
+  rpc UpdateRequest(UpdateRequestInput) returns (UpdateRequestResponse);
+  rpc DeleteRequest(DeleteRequestInput) returns (DeleteRequestResponse);
+}
+
+message CreateRequestInput {
+  float weight = 1 [(validate.rules).float = {gt: 0}];
+  string from_location = 2 [(validate.rules).string = {min_len: 1}];
+  string to_location = 3 [(validate.rules).string = {min_len: 1}];
+  string preferred_date = 4 [(validate.rules).string = {min_len: 1}];
+  int32 created_by = 5 [(validate.rules).int32 = {gt: 0}];
+  int32 responsible_id = 6 [(validate.rules).int32 = {gt: 0}];
+  string created_at = 7 [(validate.rules).string = {min_len: 1}];
+}
+
+message CreateRequestResponse {
+  string request_id = 1;
+}
+
+message GetRequestInput {
+  google.protobuf.Int32Value user_id = 1;
+  google.protobuf.Int32Value status_id = 2;
+}
+
+message GetRequestResponse {
+  repeated DeliveryRequest requests = 1;
+}
+
+message DeliveryRequest {
+  int32 id = 1;
+  float weight = 2;
+  string from_location = 3;
+  string to_location = 4;
+  string preferred_date = 5;
+  int32 created_by = 6;
+  int32 responsible_id = 7;
+  int32 status_id = 8;
+  string created_at = 9;
+}
+
+message UpdateRequestInput {
+  google.protobuf.FloatValue weight = 1 [(validate.rules).float = {ignore_empty: true, gt: 0}];
+  google.protobuf.StringValue from_location = 2 [(validate.rules).string = {ignore_empty: true, min_len: 1}];
+  google.protobuf.StringValue to_location = 3 [(validate.rules).string = {ignore_empty: true, min_len: 1}];
+  google.protobuf.StringValue preferred_date = 4 [(validate.rules).string = {ignore_empty: true, min_len: 1}];
+  google.protobuf.Int32Value responsible_id = 5 [(validate.rules).int32 = {ignore_empty: true, gt: 0}];
+  google.protobuf.Int32Value status_id = 6 [(validate.rules).int32 = {ignore_empty: true, gt: 0}];
+  google.protobuf.Int32Value request_id = 7 [(validate.rules).int32 = {ignore_empty: false, gt: 0}];
+}
+
+message UpdateRequestResponse {
+  bool success = 1;
+}
+
+message DeleteRequestInput {
+  string request_id = 1 [(validate.rules).string = {min_len: 1}];
+}
+
+message DeleteRequestResponse {
+  bool success = 1;
+}

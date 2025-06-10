@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  drs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #environment:
+      # DB_USER: root
+      # DB_PASSWORD: root
+      # DB_HOST: mysql
+      # DB_PORT: 3306
+      # DB_NAME: drs_db
+    ports:
+      - "50051:50051"
+    restart: unless-stopped
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true
+
