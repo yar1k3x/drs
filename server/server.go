@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"drs/db"
 	"drs/notification"
 	pb "drs/proto"
+
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/yar1k3x/JWTValidation/jwt"
+	"github.com/yar1k3x/JWTValidation/middleware"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -109,12 +114,18 @@ func (s *server) UpdateRequest(ctx context.Context, in *pb.UpdateRequestInput) (
 }
 
 func Start() {
+	jwt.JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
+	//jwt.JWTSecretKey = "ZuxooEpNl7MgUUbnxGntsBvSxEnizlgsDfTvOBGamck"
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("не удалось запустить сервер: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			grpc_auth.UnaryServerInterceptor(middleware.AuthMiddleware),
+		),
+	)
 	pb.RegisterDeliveryRequestServiceServer(s, &server{})
 	reflection.Register(s)
 	log.Println("DRS сервер запущен на порту 50051")
