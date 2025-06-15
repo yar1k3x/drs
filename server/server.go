@@ -113,6 +113,29 @@ func (s *server) UpdateRequest(ctx context.Context, in *pb.UpdateRequestInput) (
 
 }
 
+func (s *server) DeleteRequest(ctx context.Context, in *pb.DeleteRequestInput) (*pb.DeleteRequestResponse, error) {
+	log.Printf("Получен запрос на удаление заявки с ID %d", in.RequestId.Value)
+
+	if in.RequestId == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request_id is required")
+	}
+
+	success, err := db.DeleteDeliveryRequest(in)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "ошибка при удалении заявки: %v", err)
+	}
+
+	if !success {
+		return nil, status.Errorf(codes.NotFound, "заявка с ID %d не найдена", in.RequestId.Value)
+	}
+
+	log.Printf("Заявка с ID %d успешно удалена", in.RequestId.Value)
+
+	return &pb.DeleteRequestResponse{
+		Success: success,
+	}, nil
+}
+
 func Start() {
 	jwt.JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
 	//jwt.JWTSecretKey = "ZuxooEpNl7MgUUbnxGntsBvSxEnizlgsDfTvOBGamck"

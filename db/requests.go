@@ -207,3 +207,23 @@ func UpdateDeliveryRequest(input *proto.UpdateRequestInput) (bool, error, bool) 
 
 	return affected > 0, nil, nsSend
 }
+
+func DeleteDeliveryRequest(input *proto.DeleteRequestInput) (bool, error) {
+	stmt, err := DB.Prepare("DELETE FROM requests WHERE id = ?")
+	if err != nil {
+		return false, err
+	}
+	defer stmt.Close()
+
+	res, err := stmt.Exec(input.RequestId.Value)
+	if err != nil {
+		return false, err
+	}
+
+	affected, err := res.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	return affected > 0, nil
+}

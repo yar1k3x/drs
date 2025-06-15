@@ -17,8 +17,6 @@ type NotificationClient struct {
 	conn   *grpc.ClientConn
 }
 
-// hui
-
 func NewNotificationClient() (*NotificationClient, error) {
 	addr := os.Getenv("NOTIFICATION_SERVICE_ADDR") + ":" + os.Getenv("NOTIFICATION_SERVICE_PORT")
 	if addr == "" {

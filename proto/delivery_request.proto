@@ -63,7 +63,7 @@ message UpdateRequestResponse {
 }
 
 message DeleteRequestInput {
-  string request_id = 1 [(validate.rules).string = {min_len: 1}];
+  google.protobuf.Int32Value request_id = 1;
 }
 
 message DeleteRequestResponse {

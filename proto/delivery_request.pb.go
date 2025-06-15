@@ -501,7 +501,7 @@ func (x *UpdateRequestResponse) GetSuccess() bool {
 
 type DeleteRequestInput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId     *wrapperspb.Int32Value `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -536,11 +536,11 @@ func (*DeleteRequestInput) Descriptor() ([]byte, []int) {
 	return file_proto_delivery_request_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *DeleteRequestInput) GetRequestId() string {
+func (x *DeleteRequestInput) GetRequestId() *wrapperspb.Int32Value {
 	if x != nil {
 		return x.RequestId
 	}
-	return ""
+	return nil
 }
 
 type DeleteRequestResponse struct {
@@ -641,10 +641,10 @@ const file_proto_delivery_request_proto_rawDesc = "" +
 	"\n" +
 	"request_id\x18\a \x01(\v2\x1b.google.protobuf.Int32ValueB\t\xfaB\x06\x1a\x04 \x00@\x00R\trequestId\"1\n" +
 	"\x15UpdateRequestResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"<\n" +
-	"\x12DeleteRequestInput\x12&\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"P\n" +
+	"\x12DeleteRequestInput\x12:\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\trequestId\"1\n" +
+	"request_id\x18\x01 \x01(\v2\x1b.google.protobuf.Int32ValueR\trequestId\"1\n" +
 	"\x15DeleteRequestResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess2\xa7\x02\n" +
 	"\x16DeliveryRequestService\x12D\n" +
@@ -692,19 +692,20 @@ var file_proto_delivery_request_proto_depIdxs = []int32{
 	9,  // 7: drs.UpdateRequestInput.responsible_id:type_name -> google.protobuf.Int32Value
 	9,  // 8: drs.UpdateRequestInput.status_id:type_name -> google.protobuf.Int32Value
 	9,  // 9: drs.UpdateRequestInput.request_id:type_name -> google.protobuf.Int32Value
-	0,  // 10: drs.DeliveryRequestService.CreateRequest:input_type -> drs.CreateRequestInput
-	2,  // 11: drs.DeliveryRequestService.GetRequest:input_type -> drs.GetRequestInput
-	5,  // 12: drs.DeliveryRequestService.UpdateRequest:input_type -> drs.UpdateRequestInput
-	7,  // 13: drs.DeliveryRequestService.DeleteRequest:input_type -> drs.DeleteRequestInput
-	1,  // 14: drs.DeliveryRequestService.CreateRequest:output_type -> drs.CreateRequestResponse
-	3,  // 15: drs.DeliveryRequestService.GetRequest:output_type -> drs.GetRequestResponse
-	6,  // 16: drs.DeliveryRequestService.UpdateRequest:output_type -> drs.UpdateRequestResponse
-	8,  // 17: drs.DeliveryRequestService.DeleteRequest:output_type -> drs.DeleteRequestResponse
-	14, // [14:18] is the sub-list for method output_type
-	10, // [10:14] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	9,  // 10: drs.DeleteRequestInput.request_id:type_name -> google.protobuf.Int32Value
+	0,  // 11: drs.DeliveryRequestService.CreateRequest:input_type -> drs.CreateRequestInput
+	2,  // 12: drs.DeliveryRequestService.GetRequest:input_type -> drs.GetRequestInput
+	5,  // 13: drs.DeliveryRequestService.UpdateRequest:input_type -> drs.UpdateRequestInput
+	7,  // 14: drs.DeliveryRequestService.DeleteRequest:input_type -> drs.DeleteRequestInput
+	1,  // 15: drs.DeliveryRequestService.CreateRequest:output_type -> drs.CreateRequestResponse
+	3,  // 16: drs.DeliveryRequestService.GetRequest:output_type -> drs.GetRequestResponse
+	6,  // 17: drs.DeliveryRequestService.UpdateRequest:output_type -> drs.UpdateRequestResponse
+	8,  // 18: drs.DeliveryRequestService.DeleteRequest:output_type -> drs.DeleteRequestResponse
+	15, // [15:19] is the sub-list for method output_type
+	11, // [11:15] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_proto_delivery_request_proto_init() }

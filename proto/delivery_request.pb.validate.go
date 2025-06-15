@@ -1087,15 +1087,33 @@ func (m *DeleteRequestInput) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetRequestId()) < 1 {
-		err := DeleteRequestInputValidationError{
-			field:  "RequestId",
-			reason: "value length must be at least 1 runes",
+	if all {
+		switch v := interface{}(m.GetRequestId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DeleteRequestInputValidationError{
+					field:  "RequestId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DeleteRequestInputValidationError{
+					field:  "RequestId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
 		}
-		if !all {
-			return err
+	} else if v, ok := interface{}(m.GetRequestId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteRequestInputValidationError{
+				field:  "RequestId",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
 		}
-		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
