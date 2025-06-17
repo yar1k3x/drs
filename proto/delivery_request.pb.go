@@ -635,7 +635,7 @@ var File_drs_proto_delivery_request_proto protoreflect.FileDescriptor
 
 const file_drs_proto_delivery_request_proto_rawDesc = "" +
 	"\n" +
-	" drs/proto/delivery_request.proto\x12\x03drs\x1a\x1bdrs/validate/validate.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xc0\x02\n" +
+	" drs/proto/delivery_request.proto\x12\x03drs\x1a\x1bdrs/validate/validate.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xb7\x02\n" +
 	"\x12CreateRequestInput\x12\"\n" +
 	"\x06weight\x18\x01 \x01(\x02B\n" +
 	"\xfaB\a\n" +
@@ -646,9 +646,9 @@ const file_drs_proto_delivery_request_proto_rawDesc = "" +
 	"\x0epreferred_date\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\rpreferredDate\x12&\n" +
 	"\n" +
 	"created_by\x18\x05 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\tcreatedBy\x12.\n" +
-	"\x0eresponsible_id\x18\x06 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\rresponsibleId\x12&\n" +
+	"\x0eresponsible_id\x18\x06 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\rresponsibleId\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\a \x01(\tB\a\xfaB\x04r\x02\x10\x01R\tcreatedAt\"6\n" +
+	"created_at\x18\a \x01(\tR\tcreatedAt\"6\n" +
 	"\x15CreateRequestResponse\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\"\x81\x01\n" +

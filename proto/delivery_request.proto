@@ -21,7 +21,7 @@ message CreateRequestInput {
   string preferred_date = 4 [(validate.rules).string = {min_len: 1}];
   int32 created_by = 5 [(validate.rules).int32 = {gt: 0}];
   int32 responsible_id = 6 [(validate.rules).int32 = {gt: 0}];
-  string created_at = 7 [(validate.rules).string = {min_len: 1}];
+  string created_at = 7;
 }
 
 message CreateRequestResponse {
