@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: proto/delivery_request.proto
+// source: drs/proto/delivery_request.proto
 
 package proto
 
@@ -23,6 +23,7 @@ const (
 	DeliveryRequestService_GetRequest_FullMethodName    = "/drs.DeliveryRequestService/GetRequest"
 	DeliveryRequestService_UpdateRequest_FullMethodName = "/drs.DeliveryRequestService/UpdateRequest"
 	DeliveryRequestService_DeleteRequest_FullMethodName = "/drs.DeliveryRequestService/DeleteRequest"
+	DeliveryRequestService_ExportCSV_FullMethodName     = "/drs.DeliveryRequestService/ExportCSV"
 )
 
 // DeliveryRequestServiceClient is the client API for DeliveryRequestService service.
@@ -33,6 +34,7 @@ type DeliveryRequestServiceClient interface {
 	GetRequest(ctx context.Context, in *GetRequestInput, opts ...grpc.CallOption) (*GetRequestResponse, error)
 	UpdateRequest(ctx context.Context, in *UpdateRequestInput, opts ...grpc.CallOption) (*UpdateRequestResponse, error)
 	DeleteRequest(ctx context.Context, in *DeleteRequestInput, opts ...grpc.CallOption) (*DeleteRequestResponse, error)
+	ExportCSV(ctx context.Context, in *GetRequestInput, opts ...grpc.CallOption) (*ExportCSVResponse, error)
 }
 
 type deliveryRequestServiceClient struct {
@@ -83,6 +85,16 @@ func (c *deliveryRequestServiceClient) DeleteRequest(ctx context.Context, in *De
 	return out, nil
 }
 
+func (c *deliveryRequestServiceClient) ExportCSV(ctx context.Context, in *GetRequestInput, opts ...grpc.CallOption) (*ExportCSVResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExportCSVResponse)
+	err := c.cc.Invoke(ctx, DeliveryRequestService_ExportCSV_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeliveryRequestServiceServer is the server API for DeliveryRequestService service.
 // All implementations must embed UnimplementedDeliveryRequestServiceServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type DeliveryRequestServiceServer interface {
 	GetRequest(context.Context, *GetRequestInput) (*GetRequestResponse, error)
 	UpdateRequest(context.Context, *UpdateRequestInput) (*UpdateRequestResponse, error)
 	DeleteRequest(context.Context, *DeleteRequestInput) (*DeleteRequestResponse, error)
+	ExportCSV(context.Context, *GetRequestInput) (*ExportCSVResponse, error)
 	mustEmbedUnimplementedDeliveryRequestServiceServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedDeliveryRequestServiceServer) UpdateRequest(context.Context, 
 }
 func (UnimplementedDeliveryRequestServiceServer) DeleteRequest(context.Context, *DeleteRequestInput) (*DeleteRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRequest not implemented")
+}
+func (UnimplementedDeliveryRequestServiceServer) ExportCSV(context.Context, *GetRequestInput) (*ExportCSVResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportCSV not implemented")
 }
 func (UnimplementedDeliveryRequestServiceServer) mustEmbedUnimplementedDeliveryRequestServiceServer() {
 }
@@ -207,6 +223,24 @@ func _DeliveryRequestService_DeleteRequest_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeliveryRequestService_ExportCSV_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequestInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeliveryRequestServiceServer).ExportCSV(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeliveryRequestService_ExportCSV_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeliveryRequestServiceServer).ExportCSV(ctx, req.(*GetRequestInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeliveryRequestService_ServiceDesc is the grpc.ServiceDesc for DeliveryRequestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -230,7 +264,11 @@ var DeliveryRequestService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DeleteRequest",
 			Handler:    _DeliveryRequestService_DeleteRequest_Handler,
 		},
+		{
+			MethodName: "ExportCSV",
+			Handler:    _DeliveryRequestService_ExportCSV_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/delivery_request.proto",
+	Metadata: "drs/proto/delivery_request.proto",
 }

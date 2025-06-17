@@ -21,18 +21,18 @@ import (
 
 // ensure the imports are used
 var (
-	_ = bytes.MinRead
-	_ = errors.New("")
-	_ = fmt.Print
-	_ = utf8.UTFMax
-	_ = (*regexp.Regexp)(nil)
-	_ = (*strings.Reader)(nil)
-	_ = net.IPv4len
-	_ = time.Duration(0)
-	_ = (*url.URL)(nil)
-	_ = (*mail.Address)(nil)
-	_ = anypb.Any{}
-	_ = sort.Sort
+	_         = bytes.MinRead
+	errDummy  = errors.New("")
+	_         = fmt.Print
+	_         = utf8.UTFMax
+	_         = (*regexp.Regexp)(nil)
+	_         = (*strings.Reader)(nil)
+	_         = net.IPv4len
+	_         = time.Duration(0)
+	_         = (*url.URL)(nil)
+	_         = (*mail.Address)(nil)
+	_         = anypb.Any{}
+	_         = sort.Sort
 )
 
 // Validate checks the field values on CreateRequestInput with the rules

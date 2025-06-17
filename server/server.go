@@ -1,11 +1,13 @@
 package server
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net"
-	"os"
+	"strconv"
 
 	"drs/db"
 	"drs/notification"
@@ -136,9 +138,44 @@ func (s *server) DeleteRequest(ctx context.Context, in *pb.DeleteRequestInput) (
 	}, nil
 }
 
+func (s *server) ExportCSV(ctx context.Context, in *pb.GetRequestInput) (*pb.ExportCSVResponse, error) {
+	list, err := db.GetDeliveryRequests(in)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "db: %v", err)
+	}
+	var buf bytes.Buffer
+	w := csv.NewWriter(&buf)
+
+	_ = w.Write([]string{
+		"id", "weight", "from_location", "to_location",
+		"preferred_date", "created_by", "responsible_id",
+		"status_id", "created_at",
+	})
+
+	for _, r := range list {
+		_ = w.Write([]string{
+			strconv.Itoa(int(r.Id)),
+			strconv.FormatFloat(float64(r.Weight), 'f', -1, 32),
+			r.FromLocation,
+			r.ToLocation,
+			r.PreferredDate,
+			strconv.Itoa(int(r.CreatedBy)),
+			strconv.Itoa(int(r.ResponsibleId)),
+			strconv.Itoa(int(r.StatusId)),
+			r.CreatedAt,
+		})
+	}
+	w.Flush()
+	if err := w.Error(); err != nil {
+		return nil, status.Errorf(codes.Internal, "csv flush: %v", err)
+	}
+
+	return &pb.ExportCSVResponse{Data: buf.Bytes()}, nil
+}
+
 func Start() {
-	jwt.JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
-	//jwt.JWTSecretKey = "ZuxooEpNl7MgUUbnxGntsBvSxEnizlgsDfTvOBGamck"
+	//jwt.JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
+	jwt.JWTSecretKey = "ZuxooEpNl7MgUUbnxGntsBvSxEnizlgsDfTvOBGamck"
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("не удалось запустить сервер: %v", err)

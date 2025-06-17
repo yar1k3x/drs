@@ -11,6 +11,7 @@ service DeliveryRequestService {
   rpc GetRequest(GetRequestInput) returns (GetRequestResponse);
   rpc UpdateRequest(UpdateRequestInput) returns (UpdateRequestResponse);
   rpc DeleteRequest(DeleteRequestInput) returns (DeleteRequestResponse);
+  rpc ExportCSV(GetRequestInput) returns (ExportCSVResponse);
 }
 
 message CreateRequestInput {
@@ -68,4 +69,7 @@ message DeleteRequestInput {
 
 message DeleteRequestResponse {
   bool success = 1;
+}
+message ExportCSVResponse {
+  bytes data = 1;
 }
