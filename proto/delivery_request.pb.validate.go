@@ -123,16 +123,16 @@ func (m *CreateRequestInput) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetCreatedAt()) < 1 {
-		err := CreateRequestInputValidationError{
-			field:  "CreatedAt",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// if utf8.RuneCountInString(m.GetCreatedAt()) < 1 {
+	// 	err := CreateRequestInputValidationError{
+	// 		field:  "CreatedAt",
+	// 		reason: "value length must be at least 1 runes",
+	// 	}
+	// 	if !all {
+	// 		return err
+	// 	}
+	// 	errors = append(errors, err)
+	// }
 
 	if len(errors) > 0 {
 		return CreateRequestInputMultiError(errors)
