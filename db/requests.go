@@ -233,7 +233,7 @@ func DeleteDeliveryRequest(input *proto.DeleteRequestInput) (bool, error) {
 func GetRequestStatuses() ([]*proto.RequestStatusTemplate, error) {
 	baseQuery := `
         SELECT 
-            id, name
+            id, status_name
         FROM request_status
     `
 
