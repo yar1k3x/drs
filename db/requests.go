@@ -234,7 +234,7 @@ func GetRequestStatuses() ([]*proto.RequestStatusTemplate, error) {
 	baseQuery := `
         SELECT 
             id, name
-        FROM user_role
+        FROM request_status
     `
 
 	rows, err := DB.Query(baseQuery)
