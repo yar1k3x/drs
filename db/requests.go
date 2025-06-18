@@ -35,6 +35,7 @@ func CreateDeliveryRequest(input *proto.CreateRequestInput) (int64, error) {
 
 	return res.LastInsertId()
 }
+
 func GetDeliveryRequests(input *proto.GetRequestInput) ([]*proto.DeliveryRequest, error) {
 	baseQuery := `
         SELECT 
@@ -102,6 +103,7 @@ func GetDeliveryRequests(input *proto.GetRequestInput) ([]*proto.DeliveryRequest
 
 	return requests, nil
 }
+
 func UpdateDeliveryRequest(input *proto.UpdateRequestInput) (bool, error, bool) {
 	nsSend := false
 	if input.RequestId == nil {
@@ -226,4 +228,40 @@ func DeleteDeliveryRequest(input *proto.DeleteRequestInput) (bool, error) {
 	}
 
 	return affected > 0, nil
+}
+
+func GetRequestStatuses() ([]*proto.RequestStatusTemplate, error) {
+	baseQuery := `
+        SELECT 
+            id, name
+        FROM user_role
+    `
+
+	rows, err := DB.Query(baseQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var statuses []*proto.RequestStatusTemplate
+
+	for rows.Next() {
+		var r proto.RequestStatusTemplate
+
+		err := rows.Scan(
+			&r.Id,
+			&r.StatusName,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		statuses = append(statuses, &r)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return statuses, nil
 }

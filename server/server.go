@@ -21,6 +21,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type server struct {
@@ -171,6 +172,21 @@ func (s *server) ExportCSV(ctx context.Context, in *pb.GetRequestInput) (*pb.Exp
 	}
 
 	return &pb.ExportCSVResponse{Data: buf.Bytes()}, nil
+}
+
+func (s *server) GetRequestStatuses(ctx context.Context, in *emptypb.Empty) (*pb.GetRequestStatusesResponse, error) {
+	log.Printf("Получен запрос от пользователя на получения запросов")
+
+	statuses, err := db.GetRequestStatuses()
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "ошибка получения данных из базы данных: %v", err)
+	}
+
+	log.Printf("Заявки успешно получены")
+
+	return &pb.GetRequestStatusesResponse{
+		Statuses: statuses,
+	}, nil
 }
 
 func Start() {

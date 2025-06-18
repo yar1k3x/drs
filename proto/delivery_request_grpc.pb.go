@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	DeliveryRequestService_CreateRequest_FullMethodName = "/drs.DeliveryRequestService/CreateRequest"
-	DeliveryRequestService_GetRequest_FullMethodName    = "/drs.DeliveryRequestService/GetRequest"
-	DeliveryRequestService_UpdateRequest_FullMethodName = "/drs.DeliveryRequestService/UpdateRequest"
-	DeliveryRequestService_DeleteRequest_FullMethodName = "/drs.DeliveryRequestService/DeleteRequest"
-	DeliveryRequestService_ExportCSV_FullMethodName     = "/drs.DeliveryRequestService/ExportCSV"
+	DeliveryRequestService_CreateRequest_FullMethodName      = "/drs.DeliveryRequestService/CreateRequest"
+	DeliveryRequestService_GetRequest_FullMethodName         = "/drs.DeliveryRequestService/GetRequest"
+	DeliveryRequestService_UpdateRequest_FullMethodName      = "/drs.DeliveryRequestService/UpdateRequest"
+	DeliveryRequestService_DeleteRequest_FullMethodName      = "/drs.DeliveryRequestService/DeleteRequest"
+	DeliveryRequestService_ExportCSV_FullMethodName          = "/drs.DeliveryRequestService/ExportCSV"
+	DeliveryRequestService_GetRequestStatuses_FullMethodName = "/drs.DeliveryRequestService/GetRequestStatuses"
 )
 
 // DeliveryRequestServiceClient is the client API for DeliveryRequestService service.
@@ -35,6 +37,7 @@ type DeliveryRequestServiceClient interface {
 	UpdateRequest(ctx context.Context, in *UpdateRequestInput, opts ...grpc.CallOption) (*UpdateRequestResponse, error)
 	DeleteRequest(ctx context.Context, in *DeleteRequestInput, opts ...grpc.CallOption) (*DeleteRequestResponse, error)
 	ExportCSV(ctx context.Context, in *GetRequestInput, opts ...grpc.CallOption) (*ExportCSVResponse, error)
+	GetRequestStatuses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRequestStatusesResponse, error)
 }
 
 type deliveryRequestServiceClient struct {
@@ -95,6 +98,16 @@ func (c *deliveryRequestServiceClient) ExportCSV(ctx context.Context, in *GetReq
 	return out, nil
 }
 
+func (c *deliveryRequestServiceClient) GetRequestStatuses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRequestStatusesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRequestStatusesResponse)
+	err := c.cc.Invoke(ctx, DeliveryRequestService_GetRequestStatuses_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeliveryRequestServiceServer is the server API for DeliveryRequestService service.
 // All implementations must embed UnimplementedDeliveryRequestServiceServer
 // for forward compatibility.
@@ -104,6 +117,7 @@ type DeliveryRequestServiceServer interface {
 	UpdateRequest(context.Context, *UpdateRequestInput) (*UpdateRequestResponse, error)
 	DeleteRequest(context.Context, *DeleteRequestInput) (*DeleteRequestResponse, error)
 	ExportCSV(context.Context, *GetRequestInput) (*ExportCSVResponse, error)
+	GetRequestStatuses(context.Context, *emptypb.Empty) (*GetRequestStatusesResponse, error)
 	mustEmbedUnimplementedDeliveryRequestServiceServer()
 }
 
@@ -128,6 +142,9 @@ func (UnimplementedDeliveryRequestServiceServer) DeleteRequest(context.Context, 
 }
 func (UnimplementedDeliveryRequestServiceServer) ExportCSV(context.Context, *GetRequestInput) (*ExportCSVResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExportCSV not implemented")
+}
+func (UnimplementedDeliveryRequestServiceServer) GetRequestStatuses(context.Context, *emptypb.Empty) (*GetRequestStatusesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRequestStatuses not implemented")
 }
 func (UnimplementedDeliveryRequestServiceServer) mustEmbedUnimplementedDeliveryRequestServiceServer() {
 }
@@ -241,6 +258,24 @@ func _DeliveryRequestService_ExportCSV_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeliveryRequestService_GetRequestStatuses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeliveryRequestServiceServer).GetRequestStatuses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeliveryRequestService_GetRequestStatuses_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeliveryRequestServiceServer).GetRequestStatuses(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeliveryRequestService_ServiceDesc is the grpc.ServiceDesc for DeliveryRequestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -267,6 +302,10 @@ var DeliveryRequestService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExportCSV",
 			Handler:    _DeliveryRequestService_ExportCSV_Handler,
+		},
+		{
+			MethodName: "GetRequestStatuses",
+			Handler:    _DeliveryRequestService_GetRequestStatuses_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

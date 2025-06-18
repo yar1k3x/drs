@@ -3,6 +3,7 @@ syntax = "proto3";
 package drs;
 import "validate/validate.proto";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "drs/proto;proto";
 
@@ -12,6 +13,7 @@ service DeliveryRequestService {
   rpc UpdateRequest(UpdateRequestInput) returns (UpdateRequestResponse);
   rpc DeleteRequest(DeleteRequestInput) returns (DeleteRequestResponse);
   rpc ExportCSV(GetRequestInput) returns (ExportCSVResponse);
+  rpc GetRequestStatuses(google.protobuf.Empty) returns (GetRequestStatusesResponse);
 }
 
 message CreateRequestInput {
@@ -72,4 +74,15 @@ message DeleteRequestResponse {
 }
 message ExportCSVResponse {
   bytes data = 1;
+}
+
+message GetRequestStatusesRequest {}
+
+message RequestStatusTemplate {
+  int32 id = 1;
+  string status_name = 2;
+}
+
+message GetRequestStatusesResponse{
+  repeated RequestStatusTemplate statuses = 1;
 }
